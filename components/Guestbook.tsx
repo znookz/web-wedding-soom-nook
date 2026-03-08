@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { db } from "@/lib/firebase";
+import useCuteDialog from "@/hooks/useCuteDialog";
 import {
   addDoc,
   collection,
@@ -53,8 +54,9 @@ export default function Guestbook() {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [guestMessages, setGuestMessages] = useState<GuestMessage[]>([]);
   const [isGuestbookOpen, setIsGuestbookOpen] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const replaceConfirmedRef = useRef(false);
+  const { showConfirm, showNotice, dialogs } = useCuteDialog();
 
   useEffect(() => {
     const messagesQuery = query(
@@ -104,13 +106,12 @@ export default function Guestbook() {
     };
   }, [previewUrl]);
 
-  const onFileChange = (selectedFile: File | null) => {
-    const wasPreconfirmed = replaceConfirmedRef.current;
-    replaceConfirmedRef.current = false;
-
-    if (file && selectedFile && selectedFile !== file && !wasPreconfirmed) {
-      const shouldReplace = window.confirm(
-        "You already selected a photo. Replace it with the new one?",
+  const onFileChange = async (selectedFile: File | null) => {
+    if (file && selectedFile && selectedFile !== file) {
+      const shouldReplace = await showConfirm(
+        "Replace Photo?",
+        "You already selected a photo. Do you want to replace it with the new one?",
+        "Replace",
       );
 
       if (!shouldReplace) {
@@ -135,9 +136,13 @@ export default function Guestbook() {
     setPreviewUrl(URL.createObjectURL(selectedFile));
   };
 
-  const clearSelectedPhoto = (withConfirm = true) => {
+  const clearSelectedPhoto = async (withConfirm = true) => {
     if (withConfirm && file) {
-      const shouldClear = window.confirm("Remove the selected photo?");
+      const shouldClear = await showConfirm(
+        "Remove Photo?",
+        "Are you sure you want to remove the selected photo?",
+        "Remove",
+      );
       if (!shouldClear) {
         return;
       }
@@ -165,7 +170,7 @@ export default function Guestbook() {
       {
         method: "POST",
         body: data,
-      }
+      },
     );
     const result = await res.json();
 
@@ -202,9 +207,8 @@ export default function Guestbook() {
 
       setName("");
       setMessage("");
-      clearSelectedPhoto(false);
-
-      alert("Thank you!");
+      await clearSelectedPhoto(false);
+      showNotice("Thank You", "Your lovely message has been sent.", "Yay");
     } catch (error) {
       const code =
         typeof error === "object" && error && "code" in error
@@ -274,7 +278,7 @@ export default function Guestbook() {
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
-                  clearSelectedPhoto();
+                  void clearSelectedPhoto();
                 }}
               >
                 X
@@ -286,21 +290,9 @@ export default function Guestbook() {
               type="file"
               accept="image/*"
               className="hidden"
-              onClick={(event) => {
-                if (file) {
-                  const shouldReplace = window.confirm(
-                    "You already selected a photo. Do you want to choose a new one?",
-                  );
-
-                  if (!shouldReplace) {
-                    event.preventDefault();
-                    return;
-                  }
-
-                  replaceConfirmedRef.current = true;
-                }
+              onChange={(e) => {
+                void onFileChange(e.target.files?.[0] ?? null);
               }}
-              onChange={(e) => onFileChange(e.target.files?.[0] ?? null)}
             />
           </label>
 
@@ -416,7 +408,8 @@ export default function Guestbook() {
           </div>
         </div>
       )}
-    </section>
 
+      {dialogs}
+    </section>
   );
 }
