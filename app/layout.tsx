@@ -1,10 +1,49 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
+const weddingSans = localFont({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  display: "swap",
+  src: [
+    {
+      path: "./fonts/Itim-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    }
+  ],
+});
+
+
+
+// const weddingSans = localFont({
+//   variable: "--font-geist-sans",
+//   display: "swap",
+//   src: [
+//     {
+//       path: "./fonts/NotoSansThai-Regular.ttf",
+//       weight: "400",
+//       style: "normal",
+//     },
+//     {
+//       path: "./fonts/NotoSansThai-Bold.ttf",
+//       weight: "700",
+//       style: "normal",
+//     },
+//   ],
+// });
+
+const leagueScript = localFont({
+  variable: "--font-league-script",
+  display: "swap",
+  src: [
+    {
+      path: "./fonts/LeagueScript-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
 });
 
 const geistMono = Geist_Mono({
@@ -25,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${weddingSans.variable} ${leagueScript.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>

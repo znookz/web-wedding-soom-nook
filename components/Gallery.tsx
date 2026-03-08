@@ -1,30 +1,24 @@
-export default function Gallery() {
+import { readdir } from "fs/promises";
+import path from "path";
+import GallerySlider from "@/components/GallerySlider";
 
-  const images = [
-    "/img/1.jpg",
-    "/img/2.jpg",
-    "/img/3.jpg"
-  ];
+const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
+
+export default async function Gallery() {
+  const galleryDir = path.join(process.cwd(), "public", "gallery");
+  const files = await readdir(galleryDir);
+
+  const images = files
+    .filter((file) => IMAGE_EXTENSIONS.has(path.extname(file).toLowerCase()))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+    .map((file) => `/gallery/${file}`);
 
   return (
     <section className="bg-[var(--surface-soft)] py-20">
-
       <h2 className="mb-10 text-center text-3xl font-bold text-[var(--accent-strong)]">
         Our Memories
       </h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-10">
-
-        {images.map((src, i) => (
-          <img
-            key={i}
-            src={src}
-            className="rounded-xl shadow"
-          />
-        ))}
-
-      </div>
-
+      <GallerySlider images={images} />
     </section>
   );
 }
