@@ -1,4 +1,22 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Countdown from "react-countdown";
+
+
 export default function Hero() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  const weddingDate = new Date("2026-09-06T08:00:00");
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+
+
+
+
   return (
     <section className="relative flex h-screen flex-col items-center justify-center overflow-hidden text-center  text-black">
       <div
@@ -26,6 +44,22 @@ export default function Hero() {
         <p className="mt-2 text-4xl font-normal  md:text-6xl">
           6 September 2026
         </p>
+
+      {isMounted ? (
+        <Countdown
+          date={weddingDate}
+          renderer={({ days, hours, minutes, seconds }) => (
+            <div className="text-3xl font-semibold text-[var(--accent-strong)] mt-15">
+              {days} Days {hours} Hours {minutes} Minutes {seconds} Seconds
+            </div>
+          )}
+        />
+      ) : (
+        <div className="text-3xl font-semibold text-[var(--accent-strong)]">
+          -- Days -- Hours -- Minutes -- Seconds
+        </div>
+      )}
+        
       </div>
     </section>
   );
