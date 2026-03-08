@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import Timeline from "@/components/Timeline";
 import Gallery from "@/components/Gallery";
 import Map from "@/components/Map";
 import Guestbook from "@/components/Guestbook";
@@ -10,9 +11,10 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <Timeline />
       <Gallery />
       <Guestbook />
-      <Map />
+      {/* <Map /> */}
       <ScrollDownHint />
       <BackToTop />
     </main>
