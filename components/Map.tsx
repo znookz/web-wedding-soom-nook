@@ -1,8 +1,8 @@
 export default function Map() {
   return (
-    <section className="py-20 text-center">
+    <section className="bg-[var(--surface-soft)] py-20 text-center">
 
-      <h2 className="text-3xl font-bold mb-10">
+      <h2 className="mb-10 text-3xl font-bold text-[var(--accent-strong)]">
         Wedding Location
       </h2>
 
@@ -12,7 +12,7 @@ export default function Map() {
           src="https://www.google.com/maps?q=Bangkok&output=embed"
           width="600"
           height="400"
-          className="rounded-xl"
+          className="rounded-xl shadow"
         />
 
       </div>

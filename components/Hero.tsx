@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="h-screen flex flex-col justify-center items-center text-center bg-pink-100 text-black">
+    <section className="flex h-screen flex-col items-center justify-center bg-[var(--surface-hero)] text-center text-[var(--on-accent)]">
       <h1 className="text-5xl font-bold mb-4">
         Nook ❤️ SOOM
       </h1>
@@ -9,7 +9,7 @@ export default function Hero() {
         We're Getting Married
       </p>
 
-      <p className="mt-2 text-lg text-black">
+      <p className="mt-2 text-lg text-[var(--on-accent)]">
         6 September 2026
       </p>
     </section>

@@ -7,9 +7,9 @@ export default function Gallery() {
   ];
 
   return (
-    <section className="py-20 bg-pink-50">
+    <section className="bg-[var(--surface-soft)] py-20">
 
-      <h2 className="text-3xl text-center font-bold mb-10 text-black">
+      <h2 className="mb-10 text-center text-3xl font-bold text-[var(--accent-strong)]">
         Our Memories
       </h2>
 
